@@ -1,0 +1,8 @@
+{
+  "helloWorld": "Hello World!",
+  "accent": "Accent color",
+  "darkMode": "Dark mode",
+  "themeColor": "Theme Color",
+  "home": "Home",
+  "settings": "Settings"
+}
