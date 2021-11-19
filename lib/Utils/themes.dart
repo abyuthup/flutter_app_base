@@ -1,15 +1,113 @@
-library config.globals;
-
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'Common_keys.dart';
+
+
+ThemeData darkThemeData(BuildContext context) {
+  return ThemeData(
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        primary: Colors.white,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+      ),
+    ),
+    textSelectionTheme: TextSelectionThemeData(
+      selectionHandleColor: currentTheme.currentColor(),
+      cursorColor: currentTheme.currentColor(),
+      selectionColor: currentTheme.currentColor(),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: UnderlineInputBorder(
+        borderSide:
+        BorderSide(width: 1.5, color: currentTheme.currentColor()),
+      ),
+    ),
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    brightness: Brightness.dark,
+    appBarTheme: AppBarTheme(
+      backgroundColor: currentTheme.currentColor(),
+      // color: currentTheme.getCanvasColor(),
+      foregroundColor: Colors.white,
+    ),
+    canvasColor: currentTheme.getCanvasColor(),
+    cardColor: currentTheme.getCardColor(),
+    dialogBackgroundColor: currentTheme.getCardColor(),
+    progressIndicatorTheme: const ProgressIndicatorThemeData()
+        .copyWith(color: currentTheme.currentColor()),
+    iconTheme: const IconThemeData(
+      color: Colors.white,
+      opacity: 1.0,
+      size: 24.0,
+    ),
+    indicatorColor: currentTheme.currentColor(),
+    colorScheme: Theme
+        .of(context)
+        .colorScheme
+        .copyWith(
+      primary: Colors.white,
+      secondary: currentTheme.currentColor(),
+      brightness: Brightness.dark,
+    ),
+  );
+}
+
+
+ThemeData whiteThemeData(BuildContext context) {
+  return ThemeData(
+    textSelectionTheme: TextSelectionThemeData(
+      selectionHandleColor: currentTheme.currentColor(),
+      cursorColor: currentTheme.currentColor(),
+      selectionColor: currentTheme.currentColor(),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: UnderlineInputBorder(
+        borderSide:
+        BorderSide(width: 1.5, color: currentTheme.currentColor()),
+      ),
+    ),
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    appBarTheme: AppBarTheme(
+      backgroundColor: currentTheme.currentColor(),
+    ),
+    disabledColor: Colors.grey[600],
+    brightness: Brightness.light,
+    indicatorColor: currentTheme.currentColor(),
+    progressIndicatorTheme: const ProgressIndicatorThemeData()
+        .copyWith(color: currentTheme.currentColor()),
+    iconTheme: IconThemeData(
+      color: Colors.grey[800],
+      opacity: 1.0,
+      size: 24.0,
+    ),
+    colorScheme: Theme.of(context).colorScheme.copyWith(
+      primary: Colors.grey[800],
+      brightness: Brightness.light,
+      secondary: currentTheme.currentColor(),
+    ),
+  );
+}
+
+
+
 
 class MyTheme with ChangeNotifier {
   GetStorage? prefs;
   late bool _isDark=true, _useSystemTheme=false;
   late int backGradColor=1, cardGradColor=3, bottomGradColor=2, colorHueColor=400;
   late String accentColor='Teal', canvasColor='Grey', cardColor='Grey850';
+
+  String key_darkMode = 'darkMode';
+  String key_useSystemTheme = 'useSystemTheme';
+  String key_backGradient = 'backGrad';
+  String key_themeColor = 'themeColor';
+  String key_canvasColor = 'canvasColor';
+  String key_cardColor = 'cardColor';
+  String key_cardGrad = 'cardGrad';
+  String key_bottomGrad = 'bottomGrad';
+  String key_colorHue = 'colorHue';
+  String key_theme = 'theme';
+  String key_userThemes = 'userThemes';
 
   MyTheme() {
     prefs = GetStorage();
@@ -34,7 +132,7 @@ class MyTheme with ChangeNotifier {
         : prefs!.read(key_cardColor) as String;
     backGradColor =(prefs!.read(key_backGradient) == null) ? 1 : prefs!.read(key_backGradient) as int;
     cardGradColor =
-        (prefs!.read(key_cardGrad) == null) ? 3 : prefs!.read(key_cardGrad) as int;
+    (prefs!.read(key_cardGrad) == null) ? 3 : prefs!.read(key_cardGrad) as int;
     bottomGradColor = (prefs!.read(key_bottomGrad) == null)
         ? 2
         : prefs!.read(key_bottomGrad) as int;

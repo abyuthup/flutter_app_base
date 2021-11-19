@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_baseapp/Helpers/config.dart';
+import 'package:flutter_baseapp/Utils/themes.dart';
 
 class GradientContainer extends StatefulWidget {
   final Widget? child;
@@ -19,12 +19,12 @@ class _GradientContainerState extends State<GradientContainer> {
           end: Alignment.bottomRight,
           colors: Theme.of(context).brightness == Brightness.dark
               ? ((widget.opacity == true)
-                  ? currentTheme.getTransBackGradient()
-                  : currentTheme.getBackGradient())
+              ? currentTheme.getTransBackGradient()
+              : currentTheme.getBackGradient())
               : [
-                  const Color(0xfff5f9ff),
-                  Colors.white,
-                ],
+            const Color(0xfff5f9ff),
+            Colors.white,
+          ],
         ),
       ),
       child: widget.child,
@@ -63,9 +63,9 @@ class _BottomGradientContainerState extends State<BottomGradientContainer> {
           colors: Theme.of(context).brightness == Brightness.dark
               ? currentTheme.getBottomGradient()
               : [
-                  Colors.white,
-                  Theme.of(context).canvasColor,
-                ],
+            Colors.white,
+            Theme.of(context).canvasColor,
+          ],
         ),
       ),
       child: widget.child,
@@ -105,12 +105,12 @@ class _GradientCardState extends State<GradientCard> {
             end: Alignment.bottomRight,
             colors: Theme.of(context).brightness == Brightness.dark
                 ? currentTheme.getCardGradient(
-                    miniplayer: widget.miniplayer ?? false,
-                  )
+              miniplayer: widget.miniplayer ?? false,
+            )
                 : [
-                    Colors.white,
-                    Theme.of(context).canvasColor,
-                  ],
+              Colors.white,
+              Theme.of(context).canvasColor,
+            ],
           ),
         ),
         child: widget.child,
