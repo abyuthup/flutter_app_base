@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SliderWidget(widgetWidth: 300.0, widgetHeight: 300.0),
+      child: SliderWidget(widgetWidth: 300.0, widgetHeight: 1000.0),
     );
   }
 }
@@ -32,58 +34,42 @@ class _SliderWidgetState extends State<SliderWidget>
   late AnimationController _controller;
   late Animation animation;
   double animationBeginValue = 0;
-  double animationEndValue = 0;
-
-  bool isDraggng=false;
+  double animationEndValue = 1;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 300));
+        vsync: this, duration: Duration(milliseconds: 1000));
     _controller.addListener(() {
       setState(() {
         debugPrint("animation value ${animation.value}");
       });
     });
     initAnimation();
+    _controller.forward();
   }
 
   void initAnimation() {
     animation =
         Tween<double>(begin: animationBeginValue, end: animationEndValue)
             .animate(_controller);
-
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onPanUpdate: (dragUpdateDetails) {
-        setState(() {
-          debugPrint("onPanUpdate ${animation.value}");
-          isDraggng=true;
-          dragPosition = Offset(dragUpdateDetails.localPosition.dx,
-              dragUpdateDetails.localPosition.dy);
-        });
-      },
-      onPanEnd: (dragEndDetails) {
-        setState(() {
-          debugPrint("onPanEnd ${animation.value}");
-          isDraggng=false;
-          animationBeginValue=dragPosition.dy;
-          animationEndValue = widget.widgetHeight / 2;
-          initAnimation();
-          _controller.reset();
-          _controller.forward();
-        //  dragPosition = Offset(widget.widgetWidth / 2, widget.widgetHeight / 2);
-        });
+
+      onTap: (){
+        initAnimation();
+        _controller.reset();
+        _controller.forward();
       },
       child: Container(
         width: widget.widgetWidth,
         height: widget.widgetHeight,
         child: CustomPaint(
-          painter: SliderPainter(dragPosition: isDraggng?dragPosition:Offset(dragPosition.dx,animation.value)),
+          painter: SliderPainter(progress: animation.value*360),
         ),
       ),
     );
@@ -91,22 +77,26 @@ class _SliderWidgetState extends State<SliderWidget>
 }
 
 class SliderPainter extends CustomPainter {
-  final Offset dragPosition;
+  final double progress;
   Paint sliderPaint = Paint()
     ..style = PaintingStyle.stroke
-    ..strokeCap=StrokeCap.round
-    ..strokeWidth = 8
+    // ..strokeCap=StrokeCap.round
+    ..strokeWidth = 1
     ..color = Colors.blue;
 
-  SliderPainter({required this.dragPosition});
+  SliderPainter({required this.progress});
 
   @override
   void paint(Canvas canvas, Size size) {
-    Path path = Path();
-    path.moveTo(0, size.height / 2);
-    path.quadraticBezierTo(
-        dragPosition.dx, dragPosition.dy, size.width, size.height / 2);
-    canvas.drawPath(path, sliderPaint);
+
+    double rectWidth=min(size.width,size.height);
+
+    Rect rect =Rect.fromCenter(center: Offset(size.width/2,size.height/2), width: rectWidth, height: rectWidth);
+
+    var startAngle=0.0;
+    var sweepAngle=progress*pi/180;
+    canvas.drawArc(rect, startAngle, sweepAngle, true, sliderPaint);
+
   }
 
   @override
